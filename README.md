@@ -21,17 +21,8 @@ transactions = [
     ['apple']
 ]
 
-def apriori(transactions, min_support):
-    frequent_itemsets = [[item] for item in set(item for transaction in transactions for item in transaction) if sum(1 for transaction in transactions if item in transaction) / len(transactions) >= min_support]
+min_support = 3
 
-    k = 2
-    while frequent_itemsets:
-        candidates = [sorted(list(set(item) | {candidate})) for item in frequent_itemsets for candidate in set(transaction[k] for transaction in transactions if item[-1] in transaction) if candidate != item[-1]]
-        candidate_counts = {tuple(candidate): sum(1 for transaction in transactions if set(candidate) <= set(transaction)) for candidate in candidates}
-        frequent_itemsets = [list(candidate) for candidate, count in candidate_counts.items() if count / len(transactions) >= min_support]
-        print('candidates:',candidates)
-    return candidates
-
-# Mining frequent itemsets
-frequent_itemsets = apriori(transactions, min_support=0.4)
-print("Frequent Itemsets:", frequent_itemsets)
+frequent_itemsets = apriori(transactions, min_support)
+print("Frequent Itemsets:")
+print(frequent_itemsets)
